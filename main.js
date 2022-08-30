@@ -6,8 +6,8 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-    constructor(arr) {
-        this.field = arr;
+    constructor() {
+        this.field = [];
         this.running = true;
         this.playerPos = [0, 0];
     }
@@ -24,6 +24,7 @@ class Field {
         } else {
             console.log('Please enter a valid direction. (U, D, L, R)\n')
         }
+        console.log(this.printPos());
 
         if (this.currentPos() && this.currentPos() != 'O') {
             if (this.currentPos() == '^'){
@@ -39,13 +40,45 @@ class Field {
         
     }
 
+    generateField(height, width, percentage) {
+        const hat = '^';
+        const hole = 'O';
+        const fieldCharacter = '░';
+        const pathCharacter = '*';
+
+        for (let i = 0; i < height; i++) {
+            this.field.push(new Array(width).fill(fieldCharacter))
+        }
+        // Set start
+        this.field[0][0] = pathCharacter;
+
+        // Set goal
+        const goalX = Math.floor(Math.random() * width);
+        const goalY = height - 1;
+        this.field[goalY][goalX] = hat;
+
+        // Set holes
+        const numHoles = (height * width) * (percentage / 100);
+        for (let i = 0; i < numHoles; i++) {
+            let y = Math.floor(Math.random() * height)
+            let x = Math.floor(Math.random() * width)
+            this.markHole(y, x)
+        }
+    }
+
     currentPos() {
         const currentPos = this.field[this.playerPos[0]][this.playerPos[1]];
         return currentPos;
     }
 
     markPath() {
-        this.field[this.playerPos[0]][this.playerPos[1]] = '*'
+        this.field[this.playerPos[0]][this.playerPos[1]] = '*';
+    }
+
+    markHole(yCoord, xCoord) {
+        if (this.field[yCoord][xCoord] == '░') {
+            this.field[yCoord][xCoord] = 'O';
+        }
     }
 
     print() {
@@ -59,20 +92,22 @@ class Field {
 
 
 // Test Field
-const myField = new Field([
-    ['*', '░', 'O'],
-    ['░', 'O', '░'],
-    ['░', '░', '░'],
-    ['░', 'O', '░'],
-    ['░', '^', '░'],
-  ]);
+// const myField = new Field([
+//     ['*', '░', 'O'],
+//     ['░', 'O', '░'],
+//     ['░', '░', '░'],
+//     ['░', 'O', '░'],
+//     ['░', '^', '░'],
+//   ]);
+
+const myField = new Field()
+myField.generateField(10, 10, 20)
 
 console.log('Welcome to Find your Hat');
 console.log('Here is your starting field.');
 
 while (myField.running) {
     myField.print();
-    console.log(myField.printPos())
     let direction = prompt('Which direction would you like to move? (U, D, L, R)\n').toLowerCase();
     myField.movePlayer(direction);
 }
