@@ -22,7 +22,7 @@ class Field {
         } else if (direction == 'r') {
             this.playerPos[1] = this.playerPos[1] + 1;
         } else {
-            console.log('Please enter a valid direction. (U, D, L, R)\n')
+            console.log('Please enter a valid direction. (U, D, L, R)\n');
         }
         console.log(this.printPos());
 
@@ -34,7 +34,7 @@ class Field {
                 this.markPath();
             }
         } else {
-            console.log('You lose!')
+            console.log('You lose!');
             this.running = false;
         }
         
@@ -60,9 +60,9 @@ class Field {
         // Set holes
         const numHoles = (height * width) * (percentage / 100);
         for (let i = 0; i < numHoles; i++) {
-            let y = Math.floor(Math.random() * height)
-            let x = Math.floor(Math.random() * width)
-            this.markHole(y, x)
+            let y = Math.floor(Math.random() * height);
+            let x = Math.floor(Math.random() * width);
+            this.markHole(y, x);
         }
     }
 
@@ -90,18 +90,8 @@ class Field {
     }
 }
 
-
-// Test Field
-// const myField = new Field([
-//     ['*', '░', 'O'],
-//     ['░', 'O', '░'],
-//     ['░', '░', '░'],
-//     ['░', 'O', '░'],
-//     ['░', '^', '░'],
-//   ]);
-
-const myField = new Field()
-myField.generateField(10, 10, 20)
+const myField = new Field();
+myField.generateField(10, 10, 20);
 
 console.log('Welcome to Find your Hat');
 console.log('Here is your starting field.');
@@ -111,3 +101,7 @@ while (myField.running) {
     let direction = prompt('Which direction would you like to move? (U, D, L, R)\n').toLowerCase();
     myField.movePlayer(direction);
 }
+
+// TODO: Add check to markHole to check for start, hat or hole to ensure correct number of holes.
+// TODO: Try adding a way to validate the field if it can be completed.
+// TODO: Allow player to type in width, height and percentage of holes upon game start.
